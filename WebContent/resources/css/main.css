@@ -1,0 +1,21 @@
+.tosbox{
+	height: 400px;
+	overflow-y: auto; 
+}
+.clear{
+	clear:both;
+}
+body {
+    padding-top: 60px;
+    padding-bottom: 40px;
+}
+em.highlight{
+	background: rgba(255,238,0,50); color:#000;
+}
+ins{
+	background: rgba(95,350,90,50);
+}
+
+del{
+	background: rgba(250,90,90,50);
+}
