@@ -11,6 +11,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/**
+ * Controller for allowing access to resource files
+ * @author rkhayasidajunior
+ *
+ */
 public class Common extends HttpServlet  {
 
 	private static final long serialVersionUID = 7694248616905557680L;

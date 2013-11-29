@@ -1,8 +1,10 @@
 package br.com.betohayasida.SolrInterface;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Collections;
 
 import org.apache.log4j.Appender;
 import org.apache.log4j.BasicConfigurator;
@@ -21,6 +23,13 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.safety.Whitelist;
 
+import br.com.betohayasida.SolrSearch.DB.PagesModel;
+
+/**
+ * Solr Query
+ * @author rkhayasidajunior
+ *
+ */
 public class Query {
 	static String DEFAULT_URL = "http://localhost:8983/solr";
 	SolrServer solr = null;
@@ -47,6 +56,7 @@ public class Query {
 		String query_string = "";
 		QueryParser parser = new QueryParser();
 		List<Result> results = new ArrayList<Result>();
+		PagesModel pages = new PagesModel();
 		
 		if(q_text.length() > 0){
 			parser.setField("text");
@@ -62,7 +72,11 @@ public class Query {
 			String pq = parser.parse(q_title);
 			
 			if(!pq.equals("Mal Formed String")){
-				query_string = query_string + " AND " + pq;
+				if(query_string.length() > 0){
+					query_string = query_string + " OR " + pq;
+				} else {
+					query_string = pq;
+				}
 			}
     	}
     	
@@ -80,6 +94,7 @@ public class Query {
 			    }
 		    	query.setFilterQueries(fq);
 		    	//query_string = query_string + " AND " + fq;
+		    	System.out.println(fq);
 		    	System.out.println(query_string);
 		    }
 	    	query.setQuery(query_string);
@@ -126,7 +141,8 @@ public class Query {
 						result.setText(clean_text);
 						result.setTitle(title.get(0));
 						result.setUrl(url.get(0));
-	
+						result.setRelevance(pages.getRelevance(name.get(0)));
+						
 		    	    	List<String> highlights = rsp.getHighlighting().get(id).get("text"); 
 			    				            
 		    	    	if (highlights != null && highlights.size() > 0) {
@@ -141,6 +157,14 @@ public class Query {
 		    	}
 		    }
     	}
+    	
+    	Collections.sort(results, new Comparator<Result>() {
+			@Override
+			public int compare(Result arg0, Result arg1) {
+				return (arg0.getRelevance() >= arg1.getRelevance() ? -1 : 1);
+			}
+         });
+    	
 	    return results;
 	}
 	

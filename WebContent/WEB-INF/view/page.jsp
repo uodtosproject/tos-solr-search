@@ -1,12 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <%@ page import="br.com.betohayasida.Diff.DiffEntry, br.com.betohayasida.SolrSearch.DB.Page, br.com.betohayasida.SolrSearch.DB.Site, java.util.HashMap,java.util.Set,java.lang.reflect.Array,java.util.ArrayList,java.util.List" %>
-<%@ include file="header.jsp" %>
+<%@ include file="header_page.jsp" %>
 <% 
 	List<Page> pages = (List<Page>) request.getAttribute("pages"); 
 	Page currentPage = (Page) request.getAttribute("currentPage"); 
 	List<DiffEntry> diffs = (List<DiffEntry>) request.getAttribute("diffs"); 
-%>
-		<hr />
+%>	
 		<div class="row">
         	<div class="span12">
         		
@@ -20,6 +19,8 @@
 		    	<br />
 		    	<% if(diffs.size() > 0) { %>
 		    	<hr />
+		    	<br />
+		    	<p><em>The highlighting in green means addition to the original text, and the highlighting in red, removal from it.</em></p>
 		    	<br />
 		    	<div class="accordion" id="accordion">
 			    	<% int i = 0; for(DiffEntry diff : diffs){ %>

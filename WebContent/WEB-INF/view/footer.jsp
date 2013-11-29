@@ -13,6 +13,28 @@
 			$('#myTab a:first').tab('show');
 
             $(".scroll").scrollToTop(1000);
+            
+            $("a.rellink").click(function(e) {
+            	$.get($(this).attr("href"), function(data) {
+                	alert('Thank you for your feedback.');
+                });
+            	$(this).parent().css("display", "none");
+            	e.preventDefault();
+            });
+            
+            $('#select-all').click(function(event) {   
+                if(this.checked) {
+                    // Iterate each checkbox
+                    $(':checkbox').each(function() {
+                        this.checked = true;                        
+                    });
+                } else {
+                	$(':checkbox').each(function() {
+                		this.checked = false;
+                	});
+                }
+            });
+            
 		});
 		</script>
         </div>

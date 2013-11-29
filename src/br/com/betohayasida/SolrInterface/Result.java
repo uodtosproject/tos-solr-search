@@ -3,6 +3,11 @@ package br.com.betohayasida.SolrInterface;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class for Solr Query Results
+ * @author rkhayasidajunior
+ *
+ */
 public class Result {
 
 	private String id = null;
@@ -12,6 +17,14 @@ public class Result {
 	private String text = null;
 	private String title = null;
 	private List<String> highlighted = new ArrayList<String>();
+	private int relevance = 0;
+	
+	public int getRelevance() {
+		return relevance;
+	}
+	public void setRelevance(int relevance) {
+		this.relevance = relevance;
+	}
 	public String getId() {
 		return id;
 	}

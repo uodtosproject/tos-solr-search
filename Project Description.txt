@@ -1,0 +1,2 @@
+#Project Description
+This project implements an interface for querying the Solr server. Besides the web interface, it implements a parser, that translates simpler queries used in the web interface to proper Solr queries. After querying Solr, it presents the results through the web interface.

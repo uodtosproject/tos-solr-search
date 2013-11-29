@@ -1,4 +1,4 @@
-<%@ page import="br.com.betohayasida.SolrSearch.DB.Site,java.util.List,java.lang.reflect.Array,java.util.ArrayList,java.util.List" %>
+<%@ page import="br.com.betohayasida.SolrSearch.DB.Site,br.com.betohayasida.SolrSearch.DB.Question,java.util.List,java.lang.reflect.Array,java.util.ArrayList" %>
 <!DOCTYPE html>
 <!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
@@ -22,31 +22,7 @@
         <script src="<%= request.getContextPath()%>/resources/js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
     </head>
     <body>
-        <!--[if lt IE 7]>
-            <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
-        <![endif]-->
-        <div class="navbar navbar-inverse navbar-fixed-top">
-            <div class="navbar-inner">
-                <div class="container">
-                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </a>
-                    <a class="brand" href="<%= request.getContextPath()%>/search">Search</a>
-                    <div class="nav-collapse collapse">
-                        <ul class="nav">
-                            <li><a href="<%= request.getContextPath()%>/search">Home</a></li>
-                        </ul>
-                    </div>
-                    <div class="navbar-form pull-right">
-                        <ul class="nav">
-                            <li><a href="#top" class="scroll">Scroll to the Top</a></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <%@ include file="menu.jsp" %>
         <div class="container">
 			<% 
 			String alertText = (String) request.getAttribute("alertText");
@@ -65,52 +41,103 @@
 			String q_title = (String) request.getAttribute("q_title");
 			%>
 			<div class="hero-unit">
-                <h1>Search</h1>
-          		<p class="lead">Search in Terms of Use of social networks.</p>
+                <h1>T&C.Search</h1>
+          		<p class="lead">Search in Terms and Conditions of Internet Service Providers.</p>
             </div>
             
             <div class="row">
             	<div class="span12">
-                <div class="well well-large">
-			    	<h2>How to use</h2>
-					<p>You can use logic operators (AND, OR and NOT). Group words/expressions in parenthesis, using commas (equivalent to AND) to separate expressions.</p>
-					<p>Example: <i>(one expression, another expression) OR (yet another expression, word)</i></p>
-					
-			    </div>
-			    </div>
-            </div>
-            <form class="form-horizontal" action="<%=request.getContextPath()%>/search/" method="POST">
+	                <div class="well well-large">
+				    	<h2>How to use</h2>
+						<p>You can use logic operators (AND, OR and NOT). Group words/expressions in parenthesis, using commas (equivalent to AND) to separate expressions.</p>
+						<p>Example: <i>(one expression, another expression) OR (yet another expression, word)</i></p>
+						
+				    </div>
+  
+        				<form class="form-horizontal" action="<%=request.getContextPath()%>/search/" method="POST">
+        				<h2>Keywords</h2>
+						<div class="row">
+					    	<div class="span12">
+					        	<div class="control-group">
+							    	<label class="control-label" for="q_text">Keywords</label>
+									<div class="controls">
+										<input tabindex="1" autofocus="autofocus" class="input-xlarge" name="q_text" id="q_text" type="text" placeholder="Query" value="<%= (q_text!=null) ? q_text : "" %>" />
+									</div>
+								</div>
+							</div>	
+					   	</div>
+					   	<div class="row">
+					    	<div class="span12">
+					        	<h2>Site filter</h2>
+					        </div>
+					    	<div class="span12">
+							    <br class="clear"/>
+							    <label class="checkbox">
+							    	<input type="checkbox" id="select-all" checked="checked" /> <b>Select all / none</b>
+							    </label>
+						    </div>
+						</div>
+					    <% List<Site> sites = (List<Site>) request.getAttribute("sites"); %>
+						<% int i = 0; boolean first = true; %>
+					    <% for(Site site : sites) { %>
+						    <% if( i%4 == 0 && first) { %>
+						    <div class="row">
+						    	<% first = false; %>
+						    <% } else if( i%4 == 0 ) { %>
+						    </div>
+						    <div class="row">
+						    <% } %>
+							    <div class="span3">
+								    <label class="checkbox">
+										<input type="checkbox" name="sites" id="sites" value="<%= site.getName() %>|<%= site.getVisitedOn() %>" checked="checked" />
+										<img width="15" height="15" src="<%= site.getIco() %>" title="<%= site.getDomain() %>" /> <%= site.getDomain() %>
+									</label>
+								</div>
+					    	<% i++;  %>
+				   		<% } %>
+					    </div>
+					    <div class="row">
+					    	<div class="span12">
+							    <br class="clear"/>
+							    <label class="checkbox">
+									<button type="submit" class="btn btn-inverse">Search</button>
+							    </label>
+						    </div>
+						</div>
+ 					</form>
+	   			</div>
+	   		</div>
+		   	
+            <form class="form-horizontal" action="<%=request.getContextPath()%>/crawl/" method="POST">
 			<div class="row">
-		    	<div class="span6">
-		        	<h2>Keywords</h2>
-		        	<div class="control-group">
-				    	<label class="control-label" for="q_text">Keywords in page's content</label>
-						<div class="controls">
-							<input tabindex="1" autofocus="autofocus" class="input-xlarge" name="q_text" id="q_text" type="text" placeholder="Query" value="<%= (q_text!=null) ? q_text : "" %>" />
+		    	<div class="span12">
+		    		<div class="accordion" id="accordion-crawl">
+						<div class="accordion-group">
+							<div class="accordion-heading">
+								<h4><a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion-crawl" href="#collapse-crawlOne">
+									Is the service you wanted not in the list?
+								</a></h4>
+							</div>
+							<div id="collapse-crawlOne" class="accordion-body collapse">
+								<div class="accordion-inner">
+						        	<p>Notice that the process may take a few minutes. DO NOT reload the page, as it may interfere with the process.</p>
+						        	<div class="control-group">
+								    	<label class="control-label" for="url">URL</label>
+										<div class="controls">
+											<input tabindex="5" class="input-xlarge" name="url" id="url" type="text" placeholder="e.g. http://www.facebook.com"  />
+										</div>
+									</div>
+									<div class="control-group">
+										<div class="controls">
+											<button type="submit" class="btn btn-inverse">Add</button>
+										</div>
+									</div>
+								</div>
+							</div>
 						</div>
 					</div>
-		        	<div class="control-group">
-						<label class="control-label" for="q_title">Keywords in page's title</label>
-						<div class="controls">
-							<input tabindex="2" autofocus="autofocus" class="input-xlarge" name="q_title" id="q_title" type="text" placeholder="Query" value="<%= (q_title!=null) ? q_title : "" %>" />
-						</div>
-					</div>
-					<div class="control-group">
-						<div class="controls">
-							<button type="submit" class="btn btn-inverse">Search</button>
-						</div>
-					</div>
-		        </div>
-		    	<div class="span6">
-		        	<h2>Site filter</h2>
-				    <% List<Site> sites = (List<Site>) request.getAttribute("sites"); %>
-				    <% for(Site site : sites) { %>
-				    <label class="checkbox">
-						<input type="checkbox" name="sites" id="sites" value="<%= site.getName() %>|<%= site.getVisitedOn() %>" checked />
-						<%= site.getDomain() %>
-					</label>
-			   		<% } %>
 		        </div>
 			</div>
 		    </form>
+			
 		            

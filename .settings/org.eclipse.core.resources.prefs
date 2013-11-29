@@ -1,2 +1,3 @@
 eclipse.preferences.version=1
-encoding//WebContent/WEB-INF/view/header.jsp=UTF-8
+encoding//WebContent/WEB-INF/view/header_collapsed.jsp=UTF-8
+encoding//WebContent/WEB-INF/view/questions.jsp=UTF-8

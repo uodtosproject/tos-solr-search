@@ -7,6 +7,11 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBCursor;
 import com.mongodb.DBObject;
 
+/**
+ * DB Handler for Sites collection
+ * @author rkhayasidajunior
+ *
+ */
 public class SitesModel extends MongoBase {
 	private String DBNAME = "crawler";
 	private String COLLECTIONNAME = "sites";
@@ -40,6 +45,17 @@ public class SitesModel extends MongoBase {
 				site.setVisitedOn((String) result.get("visitedOn"));
 				site.setUrl((String) result.get("url"));
 				site.setDomain((String) ((result.get("domain")!=null) ? result.get("domain") : site.getUrl()));
+				String ico = (String) result.get("ico");
+				if(ico != null){
+					if(!ico.startsWith("http://") && !ico.startsWith("https://")){
+						if(ico.startsWith("//")){
+							ico = "http:" + ico;
+						} else if(ico.startsWith("/")){
+							ico = "http://" + site.getDomain() + ico;
+						}
+					}
+				}
+				site.setIco(ico);
 				results.add(site);
 				
 			}

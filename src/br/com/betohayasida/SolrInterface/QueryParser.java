@@ -1,5 +1,10 @@
 package br.com.betohayasida.SolrInterface;
 
+/**
+ * Parser of Solr Queries
+ * @author rkhayasidajunior
+ *
+ */
 public class QueryParser {
 	private String field = "*";
 	
@@ -43,7 +48,7 @@ public class QueryParser {
 		
 		for(String kw : keywords){
 			if(kw.length() > 0){
-				if(!kw.trim().equals("OR") && !kw.trim().equals("AND") && !kw.trim().equals("NOT")){
+				if(!kw.trim().equals("OR") && !kw.trim().equals("AND") && !kw.trim().equals("NOT") && !kw.trim().equals("+")){
 					parsed_subquery = parsed_subquery + " " + this.field + ":\"" + kw.trim() + "\"";
 				} else {
 					parsed_subquery = parsed_subquery + " " + kw;

@@ -2,6 +2,11 @@ package br.com.betohayasida.SolrSearch.DB;
 
 import java.util.Date;
 
+/**
+ * Class for Page entries
+ * @author rkhayasidajunior
+ *
+ */
 public class Page {
 	private String name = null;
 	private String parent = null;
@@ -9,6 +14,13 @@ public class Page {
 	private String text = null;
 	private String title = null;
 	private String url = null;
+	private int relevance = 0;
+	public int getRelevance() {
+		return relevance;
+	}
+	public void setRelevance(int relevance) {
+		this.relevance = relevance;
+	}
 	
 	public Page(){
 		

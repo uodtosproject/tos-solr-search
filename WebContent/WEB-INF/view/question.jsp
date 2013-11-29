@@ -1,9 +1,62 @@
-<%@ include file="header.jsp" %>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
 <%@ page import="br.com.betohayasida.SolrInterface.Result,java.util.HashMap,java.util.Set,java.lang.reflect.Array,java.util.ArrayList,java.util.List" %>
-
+<%@ include file="header_collapsed.jsp" %>
+<% String question_text = (String) request.getAttribute("question_text"); %>
+<% String question_id = (String) request.getAttribute("question_id"); %>
+<% String[] parents = (String[]) request.getAttribute("parents"); %>
 <% List<Result> results = (List<Result>) request.getAttribute("results"); %>
-
-<% i = 0; int j = 0; int size = results.size(); %>
+<hr />
+<br />
+<div class="row">
+	<div class="span12">
+		<h1><%= question_text %></h1>
+        <form class="form-horizontal" action="<%=request.getContextPath()%>/question/<%= question_id %>" method="POST">
+	       	<h2>Site filter</h2>
+	       	
+		    <label class="checkbox">
+		    	<input type="checkbox" id="select-all" /> <b>Select all / none</b>
+		    </label>
+		    <% List<Site> sites2 = (List<Site>) request.getAttribute("sites"); %>
+		    <% int i = 0; boolean first = true; %>
+		    <% for(Site site : sites2) { %>
+			    <% if( i%4 == 0 && first) { %>
+			    <div class="row">
+			    	<% first = false; %>
+			    <% } else if( i%4 == 0 ) { %>
+			    </div>
+			    <div class="row">
+			    <% } %>
+				    <div class="span3">
+					    <label class="checkbox">
+					    	<% 
+					    	boolean checked = false;
+					    	if(parents != null) {
+					    		for(String p : parents){
+					    			if(p.equalsIgnoreCase(site.getName() + "|" + site.getVisitedOn())){
+					    				checked = true;
+					    			}
+					    		}
+					    	}
+					    	%>
+							<input type="checkbox" name="sites" id="sites" value="<%= site.getName() %>|<%= site.getVisitedOn() %>" <%if(checked) {%>checked<%}%> />
+							<img height="15" width="15" src="<%= site.getIco() %>" title="<%= site.getDomain() %>" /> <%= site.getDomain() %>
+						</label>
+					</div>
+		    	<% i++;  %>
+	   		<% } %>
+			    </div>
+	   		<br class="clear" />
+			<div class="row">
+				<div class="span12">
+					<button type="submit" class="btn btn-inverse">Search</button>
+				</div>
+			</div>
+	   		<br class="clear" />
+   		</form>
+	</div>
+</div>
+<%if(results != null) { %>
+<%  i = 0; int j = 0; int size = results.size(); %>
 		<div class="row">
         	<div class="span12">
             	<h3><%= results.size() %> results</h3>
@@ -63,7 +116,6 @@
 								<p><b>Is this relevant?</b> <a href="<%= request.getContextPath()%>/page/<%= result.getName() %>/relup" class="rellink btn btn-primary">Yes</a> <a href="<%= request.getContextPath()%>/page/<%= result.getName() %>/reldown" class="rellink btn btn-primary">No</a></p>
 							</div>
 	            		</div>
-	            
             		<% if(i % 20 == 19) { %>
 	            	</div>
 	            	<% } else { %>
@@ -74,5 +126,5 @@
 
     		</div>
 		</div>
-
+<% } %>
 <%@ include file="footer.jsp" %>

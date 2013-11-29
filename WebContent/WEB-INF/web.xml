@@ -25,6 +25,24 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns
     	<url-pattern>/search/*</url-pattern>
   	</servlet-mapping>
   	
+  	<servlet>
+    	<servlet-name>Crawl</servlet-name>
+    	<servlet-class>br.com.betohayasida.SolrSearch.Controllers.CrawlController</servlet-class>
+	</servlet>
+	<servlet-mapping>
+    	<servlet-name>Crawl</servlet-name>
+    	<url-pattern>/crawl/*</url-pattern>
+  	</servlet-mapping>
+  	
+  	<servlet>
+    	<servlet-name>Questions</servlet-name>
+    	<servlet-class>br.com.betohayasida.SolrSearch.Controllers.QuestionsController</servlet-class>
+	</servlet>
+	<servlet-mapping>
+    	<servlet-name>Questions</servlet-name>
+    	<url-pattern>/question/*</url-pattern>
+  	</servlet-mapping>
+  	
    	<servlet>  
 		<servlet-name>Common</servlet-name>  
 		<servlet-class>br.com.betohayasida.SolrSearch.Controllers.Common</servlet-class>  
